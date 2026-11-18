@@ -14,7 +14,7 @@ ordering:
   array_contents: retain declared source order
 catalog_digest:
   algorithm: sha256
-  value: 2c2ea4226ccd38e2f8062eee4ed133240fd73585fad52f65bdb53e7a077eec78
+  value: ed69c3981d09911062560d0f42a6259bd26c29e586d1cbebc8d3914c5fc75ffb
   canonicalization: UTF-8 encoding of compact JSON with Unicode preserved, object keys sorted by Unicode code
     point, array order preserved, and exactly one terminal LF; the complete catalog_digest field is excluded
     from the input.
@@ -413,7 +413,7 @@ rules:
   - integration/persistence/mapper-standards.md
   - references/review-routing.yaml
   status: active
-  source_file_sha256: b50107b539d69511e7c60ee5cb6287ef31a16430fc77ee3664ff913f13dd8a2d
+  source_file_sha256: 13199853ade6aa058c45b08d680ef79575e1e42328ca22f57f7427db0644e2a0
   normative_text_sha256: 5e5370bef9fae1d46a6df8518ab380422368a25d7bb0ca00affc1af3f726cfa7
   normative_text: |
     ### 0. Soft-Delete Default Profile
