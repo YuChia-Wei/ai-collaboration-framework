@@ -113,9 +113,9 @@ unresolved facts explicitly. Include only existing links and adopted target rule
 
 When present, identify the actual project-owned installation selection, framework
 configuration and adopted model policy, with their purpose and reading triggers.
-Use `.ai/project/` only when that is the target's actual layout; resolve supported
-legacy paths instead of inventing links. Include resource registries only when
-selected. Direct delegation to the adopted policy before choosing model/effort;
+Use `.ai/project/` for this framework's selected project resources and the
+verified target-owned paths for other arrangements. Include resource registries
+only when selected. Direct delegation to the adopted policy before choosing model/effort;
 keep its model mappings in that policy rather than copying them into this entry.
 Keep installation ownership evidence distinct from project policy adoption.
 

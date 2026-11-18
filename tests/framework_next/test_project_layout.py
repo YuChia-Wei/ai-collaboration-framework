@@ -14,7 +14,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'src'))
 from distribution import project_layout as layout, subagent_policy as p, subagent_registry as r
-from distribution import installation_state as state, catalog, contracts
+from distribution import installation_state as state, catalog, contracts, installation
 from distribution.data import json_bytes
 from distribution.installation_plan import project_bindings
 sys.path.insert(0, str(ROOT / 'tests'))
@@ -260,6 +260,66 @@ class LayoutTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'resource drift'):
             layout.apply(self.project, planned['plan'], planned['plan_sha256'], engine())
         self.assertEqual(native.read_bytes(), preimage)
+
+    def test_upgrade_finishes_registered_rewrites_and_edited_selection_after_an_interruption(self):
+        self.seed()
+        legacy = self.root / layout.LEGACY
+        canonical = self.root / layout.CANONICAL
+        (legacy / 'opaque.bin').write_bytes(b'opaque .ai/custom/')
+        (legacy / 'empty').mkdir()
+        native = self.root / '.codex/agents/local-reviewer.toml'
+        new_engine = engine()
+        old_document = deepcopy(state.read_lock(str(ROOT)).document)
+        new_selection = json_bytes(old_document['selection']['desired'])
+        old_selection = new_selection + b'\n'
+        selection_name = layout.LEGACY + '/installation.json'
+        (self.root / selection_name).write_bytes(old_selection)
+        previous = {'path': selection_name, 'sha256': p.digest(old_selection)}
+        old_document['project_inputs'] = [previous]
+        old = catalog.lock_bytes(json_bytes(old_document))
+        (self.root / state.LOCK_PATH).write_bytes(old.raw)
+        after_document = deepcopy(old_document)
+        after_document['engine'] = new_engine
+        after_document['project_inputs'] = [{'path': selection_name, 'sha256': p.digest(new_selection)}]
+        after = catalog.lock_bytes(json_bytes(after_document))
+        # Isolate the project files from unrelated managed content. The operation's
+        # complete lock documents and the native filesystem stay real.
+        before_side = state.InstalledLock(old.document, old.raw, old.sha256, {})
+        after_side = state.InstalledLock(after.document, after.raw, after.sha256, {})
+
+        def descriptor(raw):
+            return {'sha256': p.digest(raw), 'size': len(raw), 'mode': '100644'}
+
+        edit = {'intent': {'path': selection_name}, 'before': descriptor(old_selection),
+                'after': descriptor(new_selection)}
+        migration = layout.upgrade_plan(self.root, new_engine, after, [edit])
+        self.assertTrue(legacy.is_dir())
+        self.assertEqual((self.root / selection_name).read_bytes(), old_selection)
+        layout.validate_upgrade(self.root, migration, after, new_engine)
+        document = {'protected_inputs': [], 'project_edits': [edit], 'operation_id': '2' * 32}
+        objects = {p.digest(raw): raw for raw in (old_selection, new_selection)}
+        operation = installation.Operation(document, b'fixture operation', before_side, after_side, objects, migration)
+        for name in state.MARKERS:
+            (self.root / name).write_bytes(operation.raw)
+        with layout.writer(self.project) as guard:
+            current = installation._current(guard.io, self.root, operation)
+            installation._transition(guard.io, guard, self.root, operation, current, operation.after)
+            with patch.object(layout, '_replace', side_effect=OSError('interrupted after rename')):
+                with self.assertRaisesRegex(OSError, 'after rename'):
+                    installation._finish(guard.io, guard, self.root, operation, operation.after, old.raw)
+        self.assertFalse(legacy.exists())
+        self.assertEqual((canonical / 'installation.json').read_bytes(), new_selection)
+        self.assertTrue(all((self.root / name).exists() for name in state.MARKERS))
+        self.assertEqual(state.read_lock(self.project).sha256, after.sha256)
+        self.assertIn(b'.ai/custom/', native.read_bytes())
+        with layout.writer(self.project) as guard:
+            installation._finish_layout(guard.io, guard, self.root, operation)
+        self.assertEqual((canonical / 'opaque.bin').read_bytes(), b'opaque .ai/custom/')
+        self.assertTrue((canonical / 'empty').is_dir())
+        self.assertIn(b'.ai/project/', native.read_bytes())
+        self.assertFalse(any((self.root / name).exists() for name in state.MARKERS))
+        self.assertEqual(state.read_lock(self.project).document['project_inputs'],
+                         [{'path': '.ai/project/installation.json', 'sha256': p.digest(new_selection)}])
 
     def test_moved_lock_input_drift_rejected_without_mutation(self):
         self.seed()

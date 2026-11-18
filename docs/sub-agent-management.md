@@ -133,13 +133,14 @@ profile 與 task 的衝突。caller 須提供實際有效設定，工具不讀�
 共用目錄遷移同時處理已登記的 sub-agents 與 skills；技能的多檔投影與
 客製協調規則見[專案 skill 管理](skill-management.md)。
 
-新專案使用 `.ai/project/`。若只有 `.ai/custom/`，新工具繼續從該目錄讀寫，
-回報實際路徑；不會將舊 registry 誤認為空白，也不會暗中建立第二份政策。
+新專案使用 `.ai/project/`。既有安裝仍在舊目錄時，依
+[安裝升級程序](installation.md) 檢視並套用同一次升級中的目錄遷移。
+管理工具可讀取舊目錄以供遷移及核對，現行角色的政策入口使用 `.ai/project/`。
 兩個目錄同時存在時，即使內容相同也停止，須先由專案釐清唯一來源。
-舊版 v3 role policy 路徑及既有 23、25、26、27 檔 engine closure 保留讀取相容性；
+舊版 v3 role policy 路徑及既有 23、25、26、27 檔 engine closure 保留讀取相容性，
 執行仍須提供目前完整且驗證過的 engine pin。
 
-明確更名時，先停止會修改專案設定、角色與安裝的其他工具：
+只執行目錄遷移時，先停止會修改專案設定、角色與安裝的其他工具：
 
 1. 用 `layout-inspect` 核對舊目錄、lock 與完整清單。
 2. 用 `layout-plan` 取得完整前後雜湊及修改清單，保留回傳的 plan 與 plan_sha256。
