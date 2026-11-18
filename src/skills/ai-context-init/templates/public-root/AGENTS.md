@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This is the canonical English collaboration guide for AI agents and humans in
+This is the canonical collaboration guide for AI agents and humans in
 this repository. Keep repository-specific facts concise and backed by current
 repository evidence. Respect any explicitly selected target language ownership.
 
