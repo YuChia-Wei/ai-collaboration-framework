@@ -14,8 +14,9 @@ import sys
 import zipfile
 
 sys.path.insert(0, str(Path(__file__).absolute().parent))
-from release_common import (SCHEMA, STANDALONE_SCHEMA, README_LIMIT, README_SOURCE_PATH, document, encoded, engine_files, entry, git, identity, oid,
-                            package_adapters, plain, release_version, render_readme, require, safe_name, sha, verify_bundle)
+from release_common import (MACOS_SCHEMA, MACOS_SNIPPET_RIDS, SCHEMA, STANDALONE_SCHEMA, README_LIMIT, README_SOURCE_PATH,
+                            document, encoded, engine_files, entry, git, identity, oid, package_adapters, plain,
+                            release_version, render_readme, require, safe_name, sha, source_snippet_rids, verify_bundle)
 from release_tool_assets import refactor_notices, tool_asset_sources
 
 
@@ -118,6 +119,7 @@ def build(args):
     generation_root = work / "generation"
     refactor_root = work / "refactor-delivery"
     standalone = not args.coreclr_tools and (checkout / ".github/scripts/release_tool_assets.py").is_file()
+    macos = standalone and source_snippet_rids(checkout, source["commit"]) == MACOS_SNIPPET_RIDS
     generation_args = []
     if (checkout / '.github/scripts/native_tools.py').is_file():
         if args.coreclr_tools:
@@ -150,7 +152,8 @@ def build(args):
             info.compress_type = zipfile.ZIP_DEFLATED
             zipped.writestr(info, raw)
     raw = archive.read_bytes()
-    manifest = {"schema": STANDALONE_SCHEMA if standalone else SCHEMA, "source": source, "version": version,
+    schema = MACOS_SCHEMA if macos else STANDALONE_SCHEMA if standalone else SCHEMA
+    manifest = {"schema": schema, "source": source, "version": version,
                 "catalog_identity": receipt["identity"], "engine_pin_sha256": sha(pin_raw),
                 "archive": {"name": archive.name, "size": len(raw), "sha256": sha(raw)},
                 "entries": [entry(n, b, m) for n, (b, m) in sorted(payload.items())],
@@ -166,7 +169,7 @@ def build(args):
         executable = refactor.pop("RefactorTool.exe")
         notices = refactor_notices(refactor)
         standalone_rows = []
-        for asset_name, source_path in tool_asset_sources(version).items():
+        for asset_name, source_path in tool_asset_sources(version, macos=macos).items():
             if source_path is None:
                 asset = notices
             elif source_path == "RefactorTool.exe":

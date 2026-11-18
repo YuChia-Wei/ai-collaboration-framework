@@ -60,16 +60,18 @@ jobs:
           import json, os, sys
           from pathlib import Path
           sys.path.insert(0, str(Path('.github/scripts').resolve()))
-          from release_common import identity, release_version, git
+          from release_common import identity, release_version, git, source_snippet_rids
           source = identity(Path.cwd(), os.environ['SOURCE_COMMIT'] or None, os.environ['RELEASE_TAG'] or None)
           enabled = bool(git(Path.cwd(), 'ls-tree', source['commit'], '--', '.github/scripts/native_tools.py').strip())
           matrix = [
               {'os': 'windows-latest', 'rid': 'win-x64'},
               {'os': 'ubuntu-22.04', 'rid': 'linux-x64'},
           ]
+          if 'osx-arm64' in source_snippet_rids(Path.cwd(), source['commit']):
+              matrix.append({'os': 'macos-26', 'rid': 'osx-arm64', 'macos_snippet': True})
           # An older selected source builds and verifies its own native formatter.
-          if git(Path.cwd(), 'ls-tree', source['commit'], '--',
-                 'src/tools/dotnet/formatting/FormatTool.csproj').strip():
+          elif git(Path.cwd(), 'ls-tree', source['commit'], '--',
+                   'src/tools/dotnet/formatting/FormatTool.csproj').strip():
               matrix.append({'os': 'macos-26', 'rid': 'osx-arm64'})
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write(f"commit={source['commit']}\nversion={release_version(source)}\nenabled={str(enabled).lower()}\n")
@@ -108,7 +110,7 @@ jobs:
           New-Item -ItemType Directory -Path $buildRoot | Out-Null
           @{sdk=@{version=$env:NATIVE_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content (Join-Path $buildRoot 'global.json')
           Set-Location $buildRoot
-          python -I -B "$env:GITHUB_WORKSPACE/.github/scripts/native_tools.py" --repository $env:GITHUB_WORKSPACE --commit $env:SOURCE_COMMIT --version $env:PRODUCT_VERSION --rid $env:NATIVE_RID --work "$env:RUNNER_TEMP/native-build" --output "$env:RUNNER_TEMP/native-output"
+          python -I -B "$env:GITHUB_WORKSPACE/.github/scripts/native_tools.py" --repository $env:GITHUB_WORKSPACE --commit $env:SOURCE_COMMIT --version $env:PRODUCT_VERSION --rid $env:NATIVE_RID --work "$buildRoot/native-build" --output "$env:RUNNER_TEMP/native-output"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Test the actual native SnippetTool before delivery
         if: matrix.rid != 'osx-arm64'
@@ -181,40 +183,15 @@ jobs:
           AICF_TEST_WORK="$RUNNER_TEMP/native-sdk/generation-fixtures" \
             dotnet test "$GITHUB_WORKSPACE/tests/dotnet-generation/snippet-tool/SnippetTool.IntegrationTests.csproj" -c Release --filter 'Platform=Linux' --artifacts-path "$RUNNER_TEMP/generation-test-build" --results-directory "$results" --logger 'trx;LogFileName=fifo.trx'
           pwsh -NoProfile -File "$GITHUB_WORKSPACE/tests/dotnet-test-support/Assert-ExecutedTests.ps1" -Report "$results/fifo.trx" -Expected 1
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: native-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.rid }}
-          path: ${{ runner.temp }}/native-output/*
-          if-no-files-found: error
-          retention-days: 14
-  macos-trial:
-    if: github.event_name == 'pull_request' && inputs.tooling-commit == '' && needs.source.outputs.enabled == 'true'
-    needs: source
-    runs-on: macos-26
-    timeout-minutes: 20
-    permissions:
-      contents: read
-    env:
-      SOURCE_COMMIT: ${{ needs.source.outputs.commit }}
-      PRODUCT_VERSION: ${{ needs.source.outputs.version }}
-      NATIVE_SDK: '10.0.403'
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-        with:
-          ref: ${{ needs.source.outputs.commit }}
-          persist-credentials: false
-      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
-        with:
-          dotnet-version: ${{ env.NATIVE_SDK }}
-      - name: Build and package the Apple Silicon trial
+      - name: Prepare the Apple Silicon trial delivery and template package
+        if: matrix.macos_snippet
         shell: pwsh
+        env:
+          SOURCE_COMMIT: ${{ needs.source.outputs.commit }}
+          PRODUCT_VERSION: ${{ needs.source.outputs.version }}
         run: |
-          if ((uname -m) -ne 'arm64') { throw 'The trial requires a native Apple Silicon runner.' }
-          $work = New-Item -ItemType Directory -Path "$env:RUNNER_TEMP/macos-trial"
-          Set-Location $work.FullName
-          @{sdk=@{version=$env:NATIVE_SDK;rollForward='disable'}} | ConvertTo-Json | Set-Content global.json
-          & "$env:GITHUB_WORKSPACE/src/tools/dotnet/generation/Publish-Snippets.ps1" `
-            -Version $env:PRODUCT_VERSION -RuntimeIdentifier osx-arm64 -NativeAot -OutputRoot $work.FullName
+          Set-Location "$env:RUNNER_TEMP/native-sdk"
+          $work = "$env:RUNNER_TEMP/native-sdk/native-build"
           $name = "SnippetTool-$env:PRODUCT_VERSION-osx-arm64-aot"
           $archive = "$work/$name/$name.tar.gz"
           $delivery = New-Item -ItemType Directory -Path "$work/delivery"
@@ -223,10 +200,14 @@ jobs:
           dotnet pack "$env:GITHUB_WORKSPACE/src/tools/dotnet/generation/Generation.Templates.csproj" `
             -c Release "-p:PackageVersion=$env:PRODUCT_VERSION" --artifacts-path "$work/template-build" -o $delivery.FullName
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      - name: Check the archive, executable permissions and ad-hoc signature
+      - name: Verify the Apple Silicon archive against the native delivery files
+        if: matrix.macos_snippet
         shell: bash
+        env:
+          PRODUCT_VERSION: ${{ needs.source.outputs.version }}
         run: |
-          work="$RUNNER_TEMP/macos-trial"
+          work="$RUNNER_TEMP/native-sdk/native-build"
+          native="$RUNNER_TEMP/native-output/snippets/osx-arm64"
           cd "$work/delivery"
           archive="SnippetTool-$PRODUCT_VERSION-osx-arm64-aot.tar.gz"
           shasum -a 256 -c "$archive.sha256"
@@ -234,14 +215,19 @@ jobs:
           tar -xzf "$archive" -C "$work/extracted"
           binary="$work/extracted/SnippetTool"
           test "$(stat -f '%Lp' "$binary")" = 755
+          test "$(stat -f '%Lp' "$native/SnippetTool")" = 755
           test "$(lipo -archs "$binary")" = arm64
           codesign --verify --strict --verbose=2 "$binary"
-          codesign -dv "$binary" 2>&1 | grep -Fx 'Signature=adhoc'
+          codesign -dv "$binary"
+          cmp "$binary" "$native/SnippetTool"
+          cmp "$work/extracted/README.md" "$native/README.md"
+          diff -r "$work/extracted/snippets" "$native/snippets"
       - name: Exercise the extracted CLI and packaged templates
+        if: matrix.macos_snippet
         shell: pwsh
         run: |
-          $work = "$env:RUNNER_TEMP/macos-trial"
-          Set-Location $work
+          $work = "$env:RUNNER_TEMP/native-sdk/native-build"
+          Set-Location "$env:RUNNER_TEMP/native-sdk"
           $env:AICF_TEST_WORK = "$work/fixtures"
           $env:AICF_SNIPPET_ARTIFACT = "$work/extracted/SnippetTool"
           $project = "$env:GITHUB_WORKSPACE/tests/dotnet-generation/snippet-tool/artifact/SnippetTool.ArtifactIntegrationTests.csproj"
@@ -254,9 +240,16 @@ jobs:
             -SourceRoot $env:GITHUB_WORKSPACE -PackageDirectory "$work/delivery" -WorkDirectory "$work/template-test"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: matrix.macos_snippet && github.event_name == 'pull_request' && inputs.tooling-commit == ''
         with:
           name: macos-arm64-trial-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/macos-trial/delivery/*
+          path: ${{ runner.temp }}/native-sdk/native-build/delivery/*
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: native-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.rid }}
+          path: ${{ runner.temp }}/native-output/*
           if-no-files-found: error
           retention-days: 14
   comparison:
@@ -312,11 +305,19 @@ jobs:
                                expanded_bytes=sum(r['size'] for r in m['entries']),
                                executables={r['path']: r['size'] for r in m['entries'] if r['path'].endswith(('SnippetTool', 'SnippetTool.exe'))})
           assert rows['native']['source_commit'] == rows['coreclr']['source_commit']
+          native = rows['native']['executables']
+          coreclr = rows['coreclr']['executables']
+          assert coreclr.keys() <= native.keys()
           (root / 'native-size-comparison.json').write_text(json.dumps(rows, indent=2) + '\n')
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
-              summary.write('## Complete bundle size comparison\n\n| Mode | ZIP bytes | Expanded bytes |\n| --- | ---: | ---: |\n')
+              summary.write('## Complete bundle sizes\n\n| Mode | ZIP bytes | Expanded bytes |\n| --- | ---: | ---: |\n')
               for mode, row in rows.items():
                   summary.write(f"| {mode} | {row['zip_bytes']} | {row['expanded_bytes']} |\n")
+              if native.keys() != coreclr.keys():
+                  summary.write('\nNative includes an additional platform. Compare matching executables below.\n')
+              summary.write('\n| Executable | Native AOT bytes | CoreCLR bytes |\n| --- | ---: | ---: |\n')
+              for name, size in sorted(native.items()):
+                  summary.write(f"| {name} | {size} | {coreclr.get(name, '—')} |\n")
           print(json.dumps(rows, indent=2))
           PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

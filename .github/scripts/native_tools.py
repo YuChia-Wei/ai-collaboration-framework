@@ -7,14 +7,33 @@ from pathlib import Path
 import platform
 import stat
 import subprocess
+import sys
+
+sys.path.insert(0, str(Path(__file__).absolute().parent))
+from release_common import LEGACY_SNIPPET_RIDS, source_snippet_rids
 
 RUNTIMES = {'win-x64': ('Windows', 'AMD64', ('snippets',)),
-            'linux-x64': ('Linux', 'x86_64', ('snippets',))}
+            'linux-x64': ('Linux', 'x86_64', ('snippets',)),
+            'osx-arm64': ('Darwin', 'arm64', ('snippets',))}
 PROJECTS = {'snippets': 'generation/snippet-tool/SnippetTool.csproj'}
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def build_macos_snippet(repository, output, work, version, rid, environment):
+    publisher = repository / 'src/tools/dotnet/generation/Publish-Snippets.ps1'
+    subprocess.run(['pwsh', '-NoProfile', '-File', str(publisher), '-Version', version,
+                    '-RuntimeIdentifier', rid, '-NativeAot', '-OutputRoot', str(work)],
+                   check=True, env=environment)
+    published = work / f'SnippetTool-{version}-{rid}-aot' / 'publish'
+    # The trial tar already includes this tar-specific metadata. The release
+    # bundle describes these same publish bytes with generation.json instead.
+    (published / 'package.json').unlink()
+    destination = output / 'snippets' / rid
+    destination.parent.mkdir()
+    published.rename(destination)
 
 
 def build(repository, output, work, version, commit, rid):
@@ -23,6 +42,8 @@ def build(repository, output, work, version, commit, rid):
         raise ValueError('Native AOT requires the selected OS/architecture runner')
     if subprocess.check_output(['git', '-C', str(repository), 'rev-parse', 'HEAD'], text=True).strip() != commit:
         raise ValueError('Native source commit mismatch')
+    if rid not in source_snippet_rids(repository, commit):
+        raise ValueError('Native runtime not selected by source')
     if subprocess.check_output(['git', '-C', str(repository), 'status', '--porcelain', '--untracked-files=all']):
         raise ValueError('Clean native source checkout required')
     if output.exists() or work.exists():
@@ -31,7 +52,9 @@ def build(repository, output, work, version, commit, rid):
     work.mkdir(parents=True)
     environment = {k: v for k, v in os.environ.items()
                    if not any(x in k.upper() for x in ('TOKEN', 'SECRET', 'PASSWORD', 'CREDENTIAL'))}
-    for tool in selected:
+    if rid == 'osx-arm64':
+        build_macos_snippet(repository, output, work, version, rid, environment)
+    for tool in selected if rid != 'osx-arm64' else ():
         project = repository / 'src/tools/dotnet' / PROJECTS[tool]
         subprocess.run(['dotnet', 'publish', str(project), '-c', 'Release', '-r', rid,
                         '--self-contained', 'true', '-p:PublishAot=true', '-p:PublishSingleFile=false',
@@ -52,7 +75,7 @@ def build(repository, output, work, version, commit, rid):
     (output / 'native-tools.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
 
 
-def collect(root, output, version, commit, refactor_output=None):
+def collect(root, output, version, commit, refactor_output=None, *, runtimes=LEGACY_SNIPPET_RIDS):
     """Require all native runners' exact source/version and hash every input."""
     # The caller's root may use an OS alias such as macOS /tmp -> /private/tmp.
     # Links inside the artifact boundary remain forbidden.
@@ -86,7 +109,7 @@ def collect(root, output, version, commit, refactor_output=None):
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
         rid = manifest['rid']
         if (manifest['schema'] != 'aicf-native-tools/1' or manifest['source_commit'] != commit
-                or manifest['version'] != version or rid not in RUNTIMES or rid in seen):
+                or manifest['version'] != version or rid not in runtimes or rid in seen):
             raise ValueError('Native artifact source/version/runtime mismatch')
         seen.add(rid)
         expected = {'native-tools.json'}
@@ -114,7 +137,7 @@ def collect(root, output, version, commit, refactor_output=None):
         actual = {p.relative_to(directory).as_posix() for p in members}
         if actual != expected:
             raise ValueError('Native artifact inventory mismatch')
-    if seen != set(RUNTIMES):
+    if seen != set(runtimes):
         raise ValueError(missing)
 
 
