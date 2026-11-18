@@ -29,6 +29,12 @@ Use these rules when creating or updating canonical shared materials and delegat
 - After: `RTK Query Cache Rules (Project Decision Slot: Cache Invalidation Policy)`
 
 ## Pre-Commit Checklist
-- Searches for repository-specific decision IDs inside portable prompt assets should return no results.
-- `rg -n "ProjectNameA|ProjectNameB|DomainTermA|DomainTermB" <selected-common-resource-root>` returns no results.
+- Collect the actual project, solution, bounded-context, domain, route, aggregate
+  and folder names and decision IDs from the repository contexts used to
+  author or adapt the assets. Include relevant spelling and casing variants.
+- Search the selected portable assets for those literal identifiers. For
+  tracked files, an existing pattern list outside the search root can be used
+  with `git grep -n -F -f <pattern-file> -- <selected-common-resource-root>`.
+  Inspect each match for a dependency on the original project.
+  A search with no matches covers only the literals and paths searched.
 - Example code uses neutral names and can be copied without domain rewrite.
